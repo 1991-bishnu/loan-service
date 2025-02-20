@@ -12,11 +12,8 @@ Amarth: Code test( with System design)
 
 
 # Important Note:
-- Postman collection added
-
-
-![alt text](loan-service.postman_collection.json)
-
+- Postman collection addedx
+![Postman collection](loan-service.postman_collection.json)
 - Test added only for service package
 
 Run test
