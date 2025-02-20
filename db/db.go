@@ -2,16 +2,16 @@ package db
 
 import (
 	"fmt"
-	"log"
 
 	"github.com/1991-bishnu/loan-service/config"
+	"github.com/1991-bishnu/loan-service/db/entity"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
 var dbInstance *gorm.DB
 
-func Init(conf *config.AppConfig) {
+func Init(conf *config.AppConfig) error {
 	dsn := fmt.Sprintf(
 		"host=%s user=%s password=%s dbname=%s port=%d sslmode=disable TimeZone=Asia/Kolkata",
 		conf.Database.Host,
@@ -22,12 +22,27 @@ func Init(conf *config.AppConfig) {
 	)
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
-		log.Fatal("Failed to connect to the database:", err)
+		return fmt.Errorf("failed to connect to the DB error: %w", err)
 	}
 	dbInstance = db
-	log.Print("Connected to the database")
+	return nil
 }
 
 func GetDB() *gorm.DB {
 	return dbInstance
+}
+
+func MigrateDB() error {
+	err := dbInstance.AutoMigrate(
+		&entity.Document{},
+		&entity.Employee{},
+		&entity.Investor{},
+		&entity.Investment{},
+		&entity.Loan{},
+		&entity.User{},
+	)
+	if err != nil {
+		return fmt.Errorf("DB Migration failed error: %w", err)
+	}
+	return nil
 }

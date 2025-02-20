@@ -2,20 +2,13 @@ package entity
 
 import (
 	"database/sql"
-	"time"
 )
 
 type Document struct {
-	ID     string
-	LoanID string
+	BaseModel
 
-	Status sql.NullString
-
-	SubmitedBy sql.NullString // EmployeeID
-	Type       sql.NullString
-	URL        sql.NullString
-
-	CreatedAt time.Time
-	UpdatedAt sql.NullTime
-	DeletedAt sql.NullTime
+	LoanID     string         `gorm:"type:varchar(255);not null"`
+	SubmitedBy sql.NullString `gorm:"type:varchar(255)"`
+	Type       sql.NullString `gorm:"type:varchar(255)"`
+	URL        sql.NullString `gorm:"type:varchar(255)"`
 }

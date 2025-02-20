@@ -2,20 +2,14 @@ package entity
 
 import (
 	"database/sql"
-	"time"
 )
 
 type Loan struct {
-	ID     string
-	UserID string
-	Status sql.NullString
+	BaseModel
+	UserID string `gorm:"type:varchar(255);not null"`
 
-	PrincipalAmount sql.NullInt16
-	TotalInterest   sql.NullInt16
-	ROI             sql.NullFloat64
-	DisbursedBy     sql.NullString // EmployeeID
-
-	CreatedAt time.Time
-	UpdatedAt sql.NullTime
-	DeletedAt sql.NullTime
+	PrincipalAmount sql.NullInt16   `gorm:"type:int"`
+	TotalInterest   sql.NullInt16   `gorm:"type:int"`
+	ROI             sql.NullFloat64 `gorm:"type:float"`
+	DisbursedBy     sql.NullString  `gorm:"type:varchar(255)"` // EmployeeID
 }

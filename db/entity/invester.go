@@ -2,17 +2,11 @@ package entity
 
 import (
 	"database/sql"
-	"time"
 )
 
 type Investor struct {
-	ID     string
-	Status sql.NullString
+	BaseModel
 
-	Name  sql.NullString
-	Email sql.NullString
-
-	CreatedAt time.Time
-	UpdatedAt sql.NullTime
-	DeletedAt sql.NullTime
+	Name  sql.NullString `gorm:"type:varchar(255)"`
+	Email sql.NullString `gorm:"type:varchar(255)"`
 }
