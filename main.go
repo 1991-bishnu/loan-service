@@ -5,6 +5,7 @@ import (
 	"log"
 
 	"github.com/1991-bishnu/loan-service/config"
+	"github.com/1991-bishnu/loan-service/server"
 )
 
 func main() {
@@ -15,4 +16,5 @@ func main() {
 
 	fmt.Print(config)
 
+	server.Start(config)
 }

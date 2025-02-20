@@ -6,7 +6,7 @@ import (
 	"github.com/spf13/viper"
 )
 
-type Config struct {
+type AppConfig struct {
 	Server struct {
 		Address string `mapstructure:"address"`
 		Mode    string `mapstructure:"mode"`
@@ -30,7 +30,7 @@ type Config struct {
 	} `mapstructure:"auth"`
 }
 
-func LoadConfig() (*Config, error) {
+func LoadConfig() (*AppConfig, error) {
 	viper.SetConfigName("dev")
 	viper.SetConfigType("yaml")
 	viper.AddConfigPath("./")
@@ -42,7 +42,7 @@ func LoadConfig() (*Config, error) {
 		return nil, fmt.Errorf("error reading config file: %w", err)
 	}
 
-	var config Config
+	var config AppConfig
 	if err := viper.Unmarshal(&config); err != nil {
 		return nil, fmt.Errorf("error unmarshaling config: %w", err)
 	}
