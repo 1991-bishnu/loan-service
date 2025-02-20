@@ -239,7 +239,7 @@ func (obj *loan) Invest(ctx context.Context, req *model.InvestReq) (res *model.I
 			ID: util.GeneratePID(constant.PrefixDocument),
 		},
 		LoanID: loan.ID,
-		Type:   sql.NullString{String: constant.DocumentTypeAgreementInvestment, Valid: true},
+		Type:   sql.NullString{String: constant.DocumentTypeAgreementInvestor, Valid: true},
 	}
 	if err := obj.documentStore.Insert(ctx, document); err != nil {
 		return nil, fmt.Errorf("document insert failed, error: %w", err)
