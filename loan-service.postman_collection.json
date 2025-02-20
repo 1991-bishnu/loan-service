@@ -1,0 +1,591 @@
+{
+	"info": {
+		"_postman_id": "e35375cf-84c6-4f72-b37d-5d5b2b445cb9",
+		"name": "loan-service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3746268",
+		"_collection_link": "https://bold-resonance-1169.postman.co/workspace/b5518abd-6ef6-4ca2-a200-6f1a777a75ea/collection/3746268-e35375cf-84c6-4f72-b37d-5d5b2b445cb9?action=share&source=collection_link&creator=3746268"
+	},
+	"item": [
+		{
+			"name": "health",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/health",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"health"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create loan",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Store loan_id as a collection variable\", function () {",
+							"    let response = pm.response.json(); // Parse response body",
+							"    pm.collectionVariables.set(\"loan_id\", response.loan_id);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"principal_amount\": 1000,\n    \"user_id\": \"usr_1\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/v1/loan",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"v1",
+						"loan"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"principal_amount\": 1234589,\n    \"user_id\": \"usr_1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/loan",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"loan"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 20 Feb 2025 12:11:47 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "30"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"loan_id\": \"loan_905b458d373\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Retrieve loan",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"principal_amount\": 1234589,\n    \"user_id\": 1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/v1/loan/{{loan_id}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"v1",
+						"loan",
+						"{{loan_id}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "success",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"principal_amount\": 1234589,\n    \"user_id\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/loan/{{loan_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"loan",
+								"{{loan_id}}"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 20 Feb 2025 17:52:04 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "166"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"loan_id\": \"loan_93928954be3\",\n    \"principal_amount\": 1000,\n    \"total_interest\": 200,\n    \"roi\": 20,\n    \"disbursed_at\": \"2025-02-20 23:22:01.397794 +0000 UTC\",\n    \"agreement_url\": \"dummy_url\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Approve loan",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"image_url\": \"dummy_url\",\n    \"employee_id\": \"emp_1\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/v1/loan/{{loan_id}}/approve",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"v1",
+						"loan",
+						"{{loan_id}}",
+						"approve"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"image_url\": \"dummy_url\",\n    \"employee_id\": \"emp_1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/loan/{{loan_id}}/approve",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"loan",
+								"{{loan_id}}",
+								"approve"
+							]
+						}
+					},
+					"status": "Accepted",
+					"code": 202,
+					"_postman_previewlanguage": "plain",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Thu, 20 Feb 2025 17:51:28 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "0"
+						}
+					],
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "bad request",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"image_url\": \"dummy_url\",\n    \"employee_id\": \"emp_1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/loan/{{loan_id}}/approve",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"loan",
+								"{{loan_id}}",
+								"approve"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 20 Feb 2025 17:52:57 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "70"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"error\": \"loan_id: loan_93928954be3 error: invalid status transition\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Invest on loan",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"invest_amount\": 500,\n    \"roi\": 20,\n    \"investor_id\": \"invtr_1\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/v1/loan/{{loan_id}}/invest",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"v1",
+						"loan",
+						"{{loan_id}}",
+						"invest"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "bad request",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"invest_amount\": 500,\n    \"roi\": 20,\n    \"investor_id\": \"invtr_1\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/loan/{{loan_id}}/invest",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"loan",
+								"{{loan_id}}",
+								"invest"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 20 Feb 2025 17:51:59 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "70"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"error\": \"loan_id: loan_93928954be3 error: invalid status transition\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Disburse loan",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"agreement_url\": \"dummy_url\",\n    \"employee_id\": \"emp_1\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/v1/loan/{{loan_id}}/disburse",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"v1",
+						"loan",
+						"{{loan_id}}",
+						"disburse"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"agreement_url\": \"dummy_url\",\n    \"employee_id\": \"emp_1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/loan/{{loan_id}}/disburse",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"loan",
+								"{{loan_id}}",
+								"disburse"
+							]
+						}
+					},
+					"status": "Accepted",
+					"code": 202,
+					"_postman_previewlanguage": "plain",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Thu, 20 Feb 2025 17:52:01 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "0"
+						}
+					],
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "Bad request",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"agreement_url\": \"dummy_url\",\n    \"employee_id\": \"emp_1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/loan/{{loan_id}}/disburse",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"loan",
+								"{{loan_id}}",
+								"disburse"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 20 Feb 2025 17:54:52 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "70"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"error\": \"loan_id: loan_93928954be3 error: invalid status transition\"\n}"
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "c1c9f871-e880-4087-beb4-a4eee4a8a81f",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8080",
+			"type": "string"
+		},
+		{
+			"key": "loan_id",
+			"value": "",
+			"type": "default"
+		}
+	]
+}
