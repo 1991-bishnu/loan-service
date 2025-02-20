@@ -12,6 +12,8 @@ Amarth: Code test( with System design)
 
 
 # Important Note:
+- Test added only for service package
 
-<!-- Assumpstions -->
-- Test added oly for service package
+# All tables
+
+![alt text](loan_service-db.png)
