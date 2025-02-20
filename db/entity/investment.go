@@ -12,4 +12,6 @@ type Investment struct {
 	Amount sql.NullInt64   `gorm:"type:int"`
 	Profit sql.NullInt64   `gorm:"type:int"`
 	ROI    sql.NullFloat64 `gorm:"type:float"`
+
+	AgreementID sql.NullString `gorm:"type:varchar(255)"`
 }

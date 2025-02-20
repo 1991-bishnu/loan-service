@@ -39,3 +39,19 @@ type ApproveLoanReq struct {
 	EmployeeID string `json:"employee_id"`
 	ImageURL   string `json:"image_url"`
 }
+
+type InvestReq struct {
+	LoanID       string
+	InvestorID   string  `json:"investor_id"`
+	InvestAmount int64   `json:"invest_amount"`
+	ROI          float64 `json:"roi"`
+}
+
+type InvestRes struct {
+	InvestmentID string  `json:"investment_id"`
+	LoanID       string  `json:"loan_id"`
+	AgreementURL string  `json:"agreement_url"`
+	InvestAmount int64   `json:"invest_amount"`
+	ROI          float64 `json:"roi"`
+	Profit       int64   `json:"profit"`
+}

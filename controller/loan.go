@@ -14,6 +14,7 @@ type Loan interface {
 	Create(c *gin.Context)
 	Retrieve(c *gin.Context)
 	Approve(c *gin.Context)
+	Invest(c *gin.Context)
 }
 type loan struct {
 	service service.Loan
@@ -108,4 +109,40 @@ func (obj *loan) Approve(c *gin.Context) {
 		return
 	}
 	c.Status(http.StatusAccepted)
+}
+
+func (obj *loan) Invest(c *gin.Context) {
+	ctx := c.Request.Context()
+
+	req := &model.InvestReq{}
+	if err := c.ShouldBindJSON(req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	req.LoanID = c.Param("id")
+	if req.LoanID == "" {
+		c.JSON(http.StatusNotFound, gin.H{"error": "loan id is missing in URL"})
+		return
+	}
+
+	res, err := obj.service.Invest(ctx, req)
+	if err != nil {
+		errorMap := map[error]int{
+			custom_error.LoanNotFound:         http.StatusBadRequest,
+			custom_error.InvestorNotFound:     http.StatusBadRequest,
+			custom_error.ErrInvalidTransition: http.StatusBadRequest,
+			custom_error.InvalidInvestAmount:  http.StatusBadRequest,
+		}
+		for key, status := range errorMap {
+			if errors.Is(err, key) {
+				c.JSON(status, gin.H{"error": err.Error()})
+				return
+			}
+		}
+
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, res)
 }
