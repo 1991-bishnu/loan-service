@@ -8,8 +8,8 @@ type Loan struct {
 	BaseModel
 	UserID string `gorm:"type:varchar(255);not null"`
 
-	PrincipalAmount sql.NullInt16   `gorm:"type:int"`
-	TotalInterest   sql.NullInt16   `gorm:"type:int"`
+	PrincipalAmount sql.NullInt64   `gorm:"type:int"`
+	TotalInterest   sql.NullInt64   `gorm:"type:int"`
 	ROI             sql.NullFloat64 `gorm:"type:float"`
 	DisbursedBy     sql.NullString  `gorm:"type:varchar(255)"` // EmployeeID
 

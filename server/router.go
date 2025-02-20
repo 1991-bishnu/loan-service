@@ -23,8 +23,9 @@ func NewRouter(conf *config.AppConfig) *gin.Engine {
 	router.Use(middleware.AuthMiddleware(conf))
 
 	userStoreObj := store.NewUser(db.GetDB())
+	loanStoreObj := store.NewLoan(db.GetDB())
 
-	loanServiceObj := service.NewLoan(&userStoreObj)
+	loanServiceObj := service.NewLoan(loanStoreObj, userStoreObj)
 
 	v1 := router.Group("v1")
 	{

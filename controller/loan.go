@@ -50,7 +50,12 @@ func (obj *loan) Retrieve(c *gin.Context) {
 		return
 	}
 
-	res, err := obj.service.Retrieve(ctx, id)
+	req := &model.RetrieveLoanReq{
+		LoanID: id,
+		UserID: c.Query("user_id"),
+	}
+
+	res, err := obj.service.Retrieve(ctx, req)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
