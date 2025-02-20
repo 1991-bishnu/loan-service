@@ -2,6 +2,7 @@ package store
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/1991-bishnu/loan-service/db/entity"
 	"gorm.io/gorm"
@@ -11,6 +12,7 @@ type Loan interface {
 	Insert(ctx context.Context, loan *entity.Loan) (err error)
 	GetByIDAndUserID(ctx context.Context, id string, userID string) (loan *entity.Loan, err error)
 	GetByID(ctx context.Context, id string) (loan *entity.Loan, err error)
+	Update(ctx context.Context, loan *entity.Loan) (err error)
 }
 
 type loan struct {
@@ -22,24 +24,49 @@ func NewLoan(db *gorm.DB) Loan {
 }
 
 func (obj *loan) Insert(ctx context.Context, loan *entity.Loan) (err error) {
-	err = obj.db.Create(loan).Error
-	return
+	err = obj.db.WithContext(ctx).Create(loan).Error
+	if err != nil {
+		return fmt.Errorf("loan create failed. Error: %w", err)
+	}
+	return nil
 }
 
 func (obj *loan) GetByIDAndUserID(ctx context.Context, id string, userID string) (loan *entity.Loan, err error) {
 	loan = &entity.Loan{}
-	err = obj.db.WithContext(ctx).Scopes(ScopeNotDeleted(), ScopeUserID(userID)).First(loan, "id = ?", id).Error
+
+	whereClouse := &entity.Loan{
+		BaseModel: entity.BaseModel{
+			ID: id,
+		},
+	}
+
+	err = obj.db.WithContext(ctx).Scopes(ScopeNotDeleted(), ScopeUserID(userID)).Find(loan, whereClouse).Error
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("loan not found. Error: %w", err)
 	}
 	return loan, nil
 }
 
 func (obj *loan) GetByID(ctx context.Context, id string) (loan *entity.Loan, err error) {
 	loan = &entity.Loan{}
-	err = obj.db.WithContext(ctx).Scopes(ScopeNotDeleted()).First(loan, "id = ?", id).Error
+
+	whereClouse := &entity.Loan{
+		BaseModel: entity.BaseModel{
+			ID: id,
+		},
+	}
+
+	err = obj.db.WithContext(ctx).Scopes(ScopeNotDeleted()).Find(loan, whereClouse).Error
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("loan not found. Error: %w", err)
 	}
 	return loan, nil
+}
+
+func (obj *loan) Update(ctx context.Context, loan *entity.Loan) (err error) {
+	err = obj.db.WithContext(ctx).Save(loan).Error
+	if err != nil {
+		return fmt.Errorf("loan update failed. Error: %w", err)
+	}
+	return nil
 }

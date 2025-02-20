@@ -1,6 +1,7 @@
 package store
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/1991-bishnu/loan-service/db/entity"
@@ -8,7 +9,7 @@ import (
 )
 
 type User interface {
-	GetByID(id string) (user *entity.User, err error)
+	GetByID(ctx context.Context, id string) (user *entity.User, err error)
 }
 
 type user struct {
@@ -19,9 +20,17 @@ func NewUser(db *gorm.DB) User {
 	return &user{db: db}
 }
 
-func (obj *user) GetByID(id string) (user *entity.User, err error) {
+func (obj *user) GetByID(ctx context.Context, id string) (user *entity.User, err error) {
 	user = &entity.User{}
-	if err := obj.db.Last(&user, "id = ?", id).Error; err != nil {
+
+	whereClouse := &entity.User{
+		BaseModel: entity.BaseModel{
+			ID: id,
+		},
+	}
+
+	err = obj.db.WithContext(ctx).Scopes(ScopeNotDeleted()).Find(user, whereClouse).Error
+	if err != nil {
 		return nil, fmt.Errorf("user not found. Error: %w", err)
 	}
 
