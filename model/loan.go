@@ -50,8 +50,13 @@ type InvestReq struct {
 type InvestRes struct {
 	InvestmentID string  `json:"investment_id"`
 	LoanID       string  `json:"loan_id"`
-	AgreementURL string  `json:"agreement_url"`
 	InvestAmount int64   `json:"invest_amount"`
 	ROI          float64 `json:"roi"`
 	Profit       int64   `json:"profit"`
+}
+
+type DisbursReq struct {
+	LoanID       string
+	EmployeeID   string `json:"employee_id"`
+	AgreementURL string `json:"agreement_url"`
 }

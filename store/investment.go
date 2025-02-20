@@ -29,16 +29,14 @@ func (obj *investment) Insert(ctx context.Context, investment *entity.Investment
 	return nil
 }
 
-func (obj *investment) GetByLoanID(ctx context.Context, id string) ([]*entity.Investment, error) {
+func (obj *investment) GetByLoanID(ctx context.Context, loanID string) ([]*entity.Investment, error) {
 	var investments []*entity.Investment
 
 	whereClouse := &entity.Investment{
-		BaseModel: entity.BaseModel{
-			ID: id,
-		},
+		LoanID: loanID,
 	}
 
-	err := obj.db.WithContext(ctx).Scopes(ScopeNotDeleted()).Find(investments, whereClouse).Error
+	err := obj.db.WithContext(ctx).Scopes(ScopeNotDeleted()).Find(&investments, whereClouse).Error
 	if err != nil {
 		return nil, fmt.Errorf("investment not found. Error: %w", err)
 	}

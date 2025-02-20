@@ -49,6 +49,7 @@ func NewRouter(conf *config.AppConfig) *gin.Engine {
 			// TODO: Add separate auth for different user group
 			loanGroup.POST("/:id/approve", loanControllerObj.Approve)
 			loanGroup.POST("/:id/invest", loanControllerObj.Invest)
+			loanGroup.POST("/:id/disburse", loanControllerObj.Disburse)
 		}
 	}
 	return router
