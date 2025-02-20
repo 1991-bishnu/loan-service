@@ -20,7 +20,8 @@ func NewUser(db *gorm.DB) User {
 }
 
 func (obj *user) GetByID(id string) (user *entity.User, err error) {
-	if err := obj.db.Last(user, "id = ?", id).Error; err != nil {
+	user = &entity.User{}
+	if err := obj.db.Last(&user, "id = ?", id).Error; err != nil {
 		return nil, fmt.Errorf("user not found. Error: %w", err)
 	}
 
