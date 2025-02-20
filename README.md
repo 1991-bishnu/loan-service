@@ -7,12 +7,20 @@ Amarth: Code test( with System design)
 - Clone the repo
 - `go mod tidy`
 - `go mod vendor`
+
 - `go run main.go`
-- `go test .`
 
 
 # Important Note:
+- Postman collection added
+
+
+![alt text](loan-service.postman_collection.json)
+
 - Test added only for service package
+
+Run test
+- `go test .`
 
 # All tables
 
