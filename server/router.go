@@ -24,8 +24,10 @@ func NewRouter(conf *config.AppConfig) *gin.Engine {
 
 	userStoreObj := store.NewUser(db.GetDB())
 	loanStoreObj := store.NewLoan(db.GetDB())
+	employeeStoreObj := store.NewEmployee(db.GetDB())
+	documentStoreObj := store.NewDocument(db.GetDB())
 
-	loanServiceObj := service.NewLoan(loanStoreObj, userStoreObj)
+	loanServiceObj := service.NewLoan(loanStoreObj, userStoreObj, employeeStoreObj, documentStoreObj)
 
 	v1 := router.Group("v1")
 	{
@@ -34,6 +36,8 @@ func NewRouter(conf *config.AppConfig) *gin.Engine {
 			loanControllerObj := controller.NewLoan(loanServiceObj)
 			loanGroup.POST("", loanControllerObj.Create)
 			loanGroup.GET("/:id", loanControllerObj.Retrieve)
+
+			loanGroup.POST("/:id/approve", loanControllerObj.Approve)
 		}
 	}
 	return router
