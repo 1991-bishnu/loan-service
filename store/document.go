@@ -9,6 +9,7 @@ import (
 	"gorm.io/gorm"
 )
 
+//go:generate mockgen -source=document.go -destination=mock/document.go -package=store
 type Document interface {
 	Insert(ctx context.Context, loan *entity.Document) (err error)
 	GetByLoanID(ctx context.Context, loanID string) (documents []*entity.Document, err error)
@@ -52,7 +53,7 @@ func (obj *document) GetByLoanIDAndType(ctx context.Context, loanID string, docT
 		LoanID: loanID,
 		Type:   sql.NullString{String: docType, Valid: true},
 	}
-	err = obj.db.WithContext(ctx).Scopes(ScopeNotDeleted()).Find(&document, whereClouse).Error
+	err = obj.db.WithContext(ctx).Scopes(ScopeNotDeleted()).Find(document, whereClouse).Error
 	if err != nil {
 		return nil, fmt.Errorf("document not found. Error: %w", err)
 	}

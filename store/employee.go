@@ -8,6 +8,7 @@ import (
 	"gorm.io/gorm"
 )
 
+//go:generate mockgen -source=employee.go -destination=mock/employee.go -package=store
 type Employee interface {
 	GetByID(ctx context.Context, id string) (employee *entity.Employee, err error)
 }

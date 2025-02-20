@@ -8,6 +8,7 @@ import (
 	"gorm.io/gorm"
 )
 
+//go:generate mockgen -source=investment.go -destination=mock/investment.go -package=store
 type Investment interface {
 	Insert(ctx context.Context, investment *entity.Investment) (err error)
 	GetByLoanID(ctx context.Context, loadID string) ([]*entity.Investment, error)
