@@ -148,14 +148,11 @@ func (obj *loan) Approve(ctx context.Context, req *model.ApproveLoanReq) (err er
 		return fmt.Errorf("loan_id: %s error: %w", req.LoanID, custom_error.ErrInvalidTransition)
 	}
 
-	// TODO: Optimize this
-	stateMachine := util.NewStateMachine(loan.Status.String)
-	nextStatus, err := stateMachine.GetNextStage()
+	nextStatus, err := util.GetNextStage(loan.Status.String)
 	if err != nil {
 		return fmt.Errorf("stateMachine.GetNextStage, error: %w", err)
 	}
 
-	// Insert document
 	document := &entity.Document{
 		BaseModel: entity.BaseModel{
 			ID: util.GeneratePID(constant.PrefixDocument),
