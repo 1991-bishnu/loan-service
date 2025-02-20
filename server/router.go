@@ -3,7 +3,10 @@ package server
 import (
 	"github.com/1991-bishnu/loan-service/config"
 	"github.com/1991-bishnu/loan-service/controller"
+	"github.com/1991-bishnu/loan-service/db"
 	"github.com/1991-bishnu/loan-service/middleware"
+	"github.com/1991-bishnu/loan-service/service"
+	"github.com/1991-bishnu/loan-service/store"
 	"github.com/gin-gonic/gin"
 )
 
@@ -19,6 +22,18 @@ func NewRouter(conf *config.AppConfig) *gin.Engine {
 
 	router.Use(middleware.AuthMiddleware(conf))
 
-	return router
+	userStoreObj := store.NewUser(db.GetDB())
 
+	loanServiceObj := service.NewLoan(&userStoreObj)
+
+	v1 := router.Group("v1")
+	{
+		loanGroup := v1.Group("loan")
+		{
+			loanControllerObj := controller.NewLoan(loanServiceObj)
+			loanGroup.POST("", loanControllerObj.Create)
+			loanGroup.GET("/:id", loanControllerObj.Retrieve)
+		}
+	}
+	return router
 }
