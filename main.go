@@ -5,6 +5,7 @@ import (
 
 	"github.com/1991-bishnu/loan-service/config"
 	"github.com/1991-bishnu/loan-service/db"
+	"github.com/1991-bishnu/loan-service/db/seed"
 	"github.com/1991-bishnu/loan-service/server"
 )
 
@@ -19,14 +20,20 @@ func main() {
 		log.Fatal(err)
 	}
 
+	// Optional TODO: Move to cmd
 	err = db.MigrateDB()
 	if err != nil {
 		log.Fatal(err)
+	}
+
+	// Optional TODO: Move to cmd
+	err = seed.Seed(db.GetDB())
+	if err != nil {
+		log.Print(err)
 	}
 
 	err = server.Start(conf)
 	if err != nil {
 		log.Fatal(err)
 	}
-
 }

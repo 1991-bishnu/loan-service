@@ -12,4 +12,7 @@ type Loan struct {
 	TotalInterest   sql.NullInt16   `gorm:"type:int"`
 	ROI             sql.NullFloat64 `gorm:"type:float"`
 	DisbursedBy     sql.NullString  `gorm:"type:varchar(255)"` // EmployeeID
+
+	ApprovedAt  sql.NullTime `gorm:"type:timestamp"`
+	DisbursedAt sql.NullTime `gorm:"type:timestamp"`
 }
