@@ -251,14 +251,18 @@ func (obj *loan) Invest(ctx context.Context, req *model.InvestReq) (res *model.I
 		Type:   sql.NullString{String: constant.DocumentTypeAgreementInvestor, Valid: true},
 		URL:    sql.NullString{String: "dummy_url", Valid: true}, // TODO: Once lender sign the agreement, PDF upload to storage and capture storage link her
 	}
-	if err := obj.documentStore.Insert(ctx, investmentAgreementDocument); err != nil {
+
+	err = obj.documentStore.Insert(ctx, investmentAgreementDocument)
+	if err != nil {
 		return nil, fmt.Errorf("investment document insert failed, error: %w", err)
 	}
 
 	profit := util.CalculateProfit(req.InvestAmount, req.ROI)
 	investment.Profit = sql.NullInt64{Int64: profit, Valid: true}
 	investment.AgreementID = sql.NullString{String: investmentAgreementDocument.ID, Valid: true}
-	if err := obj.investmentStore.Insert(ctx, investment); err != nil {
+
+	err = obj.investmentStore.Insert(ctx, investment)
+	if err != nil {
 		return nil, fmt.Errorf("investment insert failed, error: %w", err)
 	}
 
