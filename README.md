@@ -46,7 +46,7 @@ design a RESTFful api that satisfy above requirement.
 - Test added only for service package
 
 Run test
-- `go test .`
+- `go test`
 
 # All tables
 
