@@ -100,32 +100,19 @@ func (obj *loan) Retrieve(ctx context.Context, req *model.RetrieveLoanReq) (res 
 	}
 
 	res.LoanID = loan.ID
-	res.Status = loan.Status.String
 	res.PrincipalAmount = loan.PrincipalAmount.Int64
 	res.TotalInterest = loan.TotalInterest.Int64
 	res.ROI = loan.ROI.Float64
-	res.CreatedAt = loan.CreatedAt.String()
 	if loan.DisbursedAt.Valid {
 		res.DisbursedAt = loan.DisbursedAt.Time.String()
 	}
-	if loan.ApprovedAt.Valid {
-		res.ApprovedAt = loan.ApprovedAt.Time.String()
-	}
 
-	documents, err := obj.documentStore.GetByLoanID(ctx, loan.ID)
+	document, err := obj.documentStore.GetByLoanIDAndType(ctx, loan.ID, constant.DocumentTypeAgreementBorrower)
 	if err != nil {
 		return nil, fmt.Errorf("document retrieval failed, error: %w", err)
 	}
-
-	for _, document := range documents {
-		doc := model.Document{
-			EmployeeID: document.SubmitedBy.String,
-			Type:       document.Type.String,
-			DocumentID: document.ID,
-			URL:        document.URL.String,
-			CreatedAt:  document.CreatedAt.String(),
-		}
-		res.Documents = append(res.Documents, doc)
+	if document.ID != "" {
+		res.AgreementURL = document.URL.String
 	}
 
 	return res, nil

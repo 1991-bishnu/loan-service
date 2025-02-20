@@ -166,8 +166,9 @@ func (obj *loan) Disburse(c *gin.Context) {
 	err := obj.service.Disburse(ctx, req)
 	if err != nil {
 		errorMap := map[error]int{
-			custom_error.LoanNotFound:     http.StatusBadRequest,
-			custom_error.EmployeeNotFound: http.StatusBadRequest,
+			custom_error.LoanNotFound:         http.StatusBadRequest,
+			custom_error.EmployeeNotFound:     http.StatusBadRequest,
+			custom_error.ErrInvalidTransition: http.StatusBadRequest,
 		}
 		for key, status := range errorMap {
 			if errors.Is(err, key) {

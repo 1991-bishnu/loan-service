@@ -2,6 +2,7 @@ package store
 
 import (
 	"context"
+	"database/sql"
 	"fmt"
 
 	"github.com/1991-bishnu/loan-service/db/entity"
@@ -11,6 +12,7 @@ import (
 type Document interface {
 	Insert(ctx context.Context, loan *entity.Document) (err error)
 	GetByLoanID(ctx context.Context, loanID string) (documents []*entity.Document, err error)
+	GetByLoanIDAndType(ctx context.Context, loanID string, docType string) (document *entity.Document, err error)
 }
 
 type document struct {
@@ -41,4 +43,19 @@ func (obj *document) GetByLoanID(ctx context.Context, loanID string) ([]*entity.
 	}
 
 	return documents, nil
+}
+
+func (obj *document) GetByLoanIDAndType(ctx context.Context, loanID string, docType string) (document *entity.Document, err error) {
+	document = &entity.Document{}
+
+	whereClouse := &entity.Document{
+		LoanID: loanID,
+		Type:   sql.NullString{String: docType, Valid: true},
+	}
+	err = obj.db.WithContext(ctx).Scopes(ScopeNotDeleted()).Find(&document, whereClouse).Error
+	if err != nil {
+		return nil, fmt.Errorf("document not found. Error: %w", err)
+	}
+
+	return document, nil
 }

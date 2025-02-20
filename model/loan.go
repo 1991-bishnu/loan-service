@@ -15,15 +15,12 @@ type RetrieveLoanReq struct {
 }
 
 type RetrieveLoanRes struct {
-	LoanID          string     `json:"loan_id"`
-	Status          string     `json:"status"`
-	PrincipalAmount int64      `json:"principal_amount"`
-	TotalInterest   int64      `json:"total_interest"`
-	ROI             float64    `json:"roi"`
-	DisbursedAt     string     `json:"disbursed_at"`
-	ApprovedAt      string     `json:"approved_at"`
-	CreatedAt       string     `json:"created_at"`
-	Documents       []Document `json:"documents"`
+	LoanID          string  `json:"loan_id"`
+	PrincipalAmount int64   `json:"principal_amount"`
+	TotalInterest   int64   `json:"total_interest"`
+	ROI             float64 `json:"roi"`
+	DisbursedAt     string  `json:"disbursed_at"`
+	AgreementURL    string  `json:"agreement_url"`
 }
 
 type Document struct {
